@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="SportsSpringMVC:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="Sports-SpringMVC.war">
+      <element id="artifact" artifact-name="SportsSpringMVC:war exploded" />
+    </root>
+  </artifact>
+</component>
