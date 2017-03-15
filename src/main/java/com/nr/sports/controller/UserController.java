@@ -4,6 +4,8 @@ import com.nr.sports.model.User;
 import com.nr.sports.utils.DB;
 import com.nr.sports.utils.KeyGeneratorImpl;
 import com.nr.sports.utils.Utils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,6 +24,7 @@ import java.util.Set;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+    private static final Log log= LogFactory.getLog(UserController.class);
     @Autowired
     private DB db;
     @Autowired
@@ -57,8 +60,11 @@ public class UserController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if(db.getUserByUserOrEmail(user.getUsername()) == null)
+        if(db.getUserByUserOrEmail(user.getUsername()) == null){
             db.saveOrUpdateUser(user);
+            log.debug("添加用户:"+user.getUsername());
+        }
+
         else{
             modelMap.addAttribute("user", user);
             modelMap.addAttribute("flag", "1");
@@ -87,6 +93,7 @@ public class UserController {
     @RequestMapping("/delUser/{userId}")
     public ModelAndView showUsers(ModelMap modelMap, @PathVariable String userId){
         db.delUser(userId);
+        log.info("删除用户");
         return new ModelAndView("redirect:/user/showUsers.html");
     }
     /**
@@ -116,6 +123,7 @@ public class UserController {
             return "/user/editUser";
         }
         db.saveOrUpdateUser(user);
+        log.debug("修改用户成功！");
         modelMap.addAttribute("flag", "1");
         return "/user/editUser";
     }

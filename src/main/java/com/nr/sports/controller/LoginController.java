@@ -3,6 +3,8 @@ package com.nr.sports.controller;
 import com.nr.sports.model.User;
 import com.nr.sports.utils.DB;
 import com.nr.sports.utils.Utils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -18,6 +20,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/login")
 public class LoginController {
+    private static final Log log= LogFactory.getLog(LoginController.class);
     @Autowired
     private DB db ;
     public static final String USERID = "userId";
@@ -57,6 +60,7 @@ public class LoginController {
             if(success == true)
                 httpSession.setAttribute(LoginController.USERID, user.getId());
             httpSession.setAttribute(LoginController.USERNAME, user.getUsername());
+            log.info("登录成功！");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -65,8 +69,6 @@ public class LoginController {
     }
     /**
      * 登录处理
-     * @param user
-     * @param modelMap
      * @return 根据验证结果返回不同的视图
      */
     @RequestMapping("/otherHandUI")
@@ -77,6 +79,7 @@ public class LoginController {
     public String logout(HttpSession httpSession){
         httpSession.removeAttribute(USERID);
         httpSession.removeAttribute(USERNAME);
+        log.info("登出！");
         return "/../../index";
     }
 
